@@ -258,25 +258,28 @@ class FileProcessor:
         Alberto Arriola, 3/9/2025,Created function
         """
         list_of_dictionary_data: list[dict] = []  # declare local list variable
-        # try-except block to handle errors writing to the external file
-        try:
-            file = open(file_name, "w")     # open external file
-            # for loop to convert students from Student to Dictionary type
-            for student in student_data:
-                student_json: dict = {"FirstName": student.first_name, "LastName": student.last_name, "CourseName": student.course_name}
-                list_of_dictionary_data.append(student_json)
-            json.dump(list_of_dictionary_data, file)    # load list_of_dictionary_data to external file using .dump()
-            file.close()        # close external file
-            # call to output_student_and_course_names() function in IO class
-            IO.output_student_and_course_names(student_data=student_data)
-        except Exception as e:
-            message = "Error: There was a problem with writing to the file.\n"
-            message += "Please check that the file is not open by another program."
-            IO.output_error_messages(message=message,error=e)
-        # finally statement to make sure the external file is closed
-        finally:
-            if file.closed == False:    # determine if external file is closed
-                file.close()    # close external file if it is still open
+        if len(student_data) == 0:      # if statement triggered if student_data is empty
+            print("There is no student data to upload.")    # print message if there is no data to upload
+        else:       # else statement triggered if there is data in student_data
+            # try-except block to handle errors writing to the external file
+            try:
+                file = open(file_name, "w")     # open external file
+                # for loop to convert students from Student to Dictionary type
+                for student in student_data:
+                    student_json: dict = {"FirstName": student.first_name, "LastName": student.last_name, "CourseName": student.course_name}
+                    list_of_dictionary_data.append(student_json)
+                json.dump(list_of_dictionary_data, file)    # load list_of_dictionary_data to external file using .dump()
+                file.close()        # close external file
+                # call to output_student_and_course_names() function in IO class
+                IO.output_student_and_course_names(student_data=student_data)
+            except Exception as e:
+                message = "Error: There was a problem with writing to the file.\n"
+                message += "Please check that the file is not open by another program."
+                IO.output_error_messages(message=message,error=e)
+            # finally statement to make sure the external file is closed
+            finally:
+                if file.closed == False:    # determine if external file is closed
+                    file.close()    # close external file if it is still open
 
 
 # Presentation --------------------------------------- #
@@ -352,13 +355,14 @@ class IO:
         ChangeLog: (Who, When, What)
         Alberto Arriola, 3/9/2025, Created function
         """
-
-        print("-" * 50)
-
-        for student in student_data:
-            print(f'Student {student.first_name} '
-                  f'{student.last_name} is enrolled in {student.course_name}')  # print out each student in student_data list
-        print("-" * 50)
+        if len(student_data) == 0:      # if statement triggered if student_data is empty
+            print("There is no student data to display.")   # print message if there is no data to display
+        else:       # else statement triggered if there is data in student_data
+            print("-" * 50)
+            for student in student_data:
+                print(f'Student {student.first_name} '
+                      f'{student.last_name} is enrolled in {student.course_name}')  # print out each student in student_data list
+            print("-" * 50)
 
     @staticmethod
     def input_student_data(student_data: list):
@@ -422,20 +426,14 @@ while (True):
 
     # Show current data
     elif menu_choice == "2":    # elif statement triggered if user enters "2"
-        if len(students) == 0:
-            print("There is no student data to display.")
-        else:
-            # Call to output_student_and_course_names() function in IO class
-            IO.output_student_and_course_names(students)
+        # Call to output_student_and_course_names() function in IO class
+        IO.output_student_and_course_names(students)
         continue    # return to start of while loop
 
     # Save data to a file
     elif menu_choice == "3":    # elif statement triggered if user enters "3"
-        if len(students) == 0:
-            print("There is no student data to upload.")
-        else:
-            # Call to write_data_to_file() function in FileProcessor class
-            FileProcessor.write_data_to_file(file_name=FILE_NAME, student_data=students)
+        # Call to write_data_to_file() function in FileProcessor class
+        FileProcessor.write_data_to_file(file_name=FILE_NAME, student_data=students)
         continue    # return to start of while loop
 
     # Exit the program
