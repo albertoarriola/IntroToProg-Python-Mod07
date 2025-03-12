@@ -5,6 +5,8 @@
 # Change Log: (Who, When, What)
 #   Alberto Arriola, 3/9/2025, Created Script
 #   Alberto Arriola, 3/9/2025, Added code to finally statement to handle file = None
+#   Alberto Arriola, 3/9/2025, Added if statements to handle no student data to display
+#                              or upload
 # ------------------------------------------------------------------------------------------ #
 import json
 
@@ -420,14 +422,20 @@ while (True):
 
     # Show current data
     elif menu_choice == "2":    # elif statement triggered if user enters "2"
-        # Call to output_student_and_course_names() function in IO class
-        IO.output_student_and_course_names(students)
+        if len(students) == 0:
+            print("There is no student data to display.")
+        else:
+            # Call to output_student_and_course_names() function in IO class
+            IO.output_student_and_course_names(students)
         continue    # return to start of while loop
 
     # Save data to a file
     elif menu_choice == "3":    # elif statement triggered if user enters "3"
-        # Call to write_data_to_file() function in FileProcessor class
-        FileProcessor.write_data_to_file(file_name=FILE_NAME, student_data=students)
+        if len(students) == 0:
+            print("There is no student data to upload.")
+        else:
+            # Call to write_data_to_file() function in FileProcessor class
+            FileProcessor.write_data_to_file(file_name=FILE_NAME, student_data=students)
         continue    # return to start of while loop
 
     # Exit the program
