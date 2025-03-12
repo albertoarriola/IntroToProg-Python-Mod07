@@ -217,6 +217,7 @@ class FileProcessor:
         Alberto Arriola, 3/9/2025, Created function
         """
         file: object = None
+        list_of_dictionary_data: list[dict] = []  # declare local list variable
         # try-except block to handle error reading the external file
         try:
             file = open(file_name, "r")     # open external json file
@@ -237,10 +238,10 @@ class FileProcessor:
         finally:
             if file is None:        # if statement triggered if file is set to None
                 file = open(file_name, "w")     # creates a new external Enrollments.json file
+                json.dump(list_of_dictionary_data, file)  # load list_of_dictionary_data to external file using .dump()
                 file.close()
             else:
                 file.close()        # close external file if it is still open
-
         return student_data  # return student_data list of Students to the main body
 
 
@@ -256,10 +257,9 @@ class FileProcessor:
         ChangeLog: (Who, When, What)
         Alberto Arriola, 3/9/2025,Created function
         """
-
+        list_of_dictionary_data: list[dict] = []  # declare local list variable
         # try-except block to handle errors writing to the external file
         try:
-            list_of_dictionary_data: list[dict] = []    # declare local list variable
             file = open(file_name, "w")     # open external file
             # for loop to convert students from Student to Dictionary type
             for student in student_data:
